@@ -88,13 +88,41 @@ def load_dictionary(base_path: str, device: str) -> tuple:
     return dictionary, config
 
 
-def get_submodule(model: LanguageModel, layer: int):
-    """Gets the residual stream submodule"""
+# def get_submodule(model: LanguageModel, layer: int):
+#     """Gets the residual stream submodule"""
+#     model_name = model._model_key
+
+#     if "pythia" in model_name:
+#         return model.gpt_neox.layers[layer]
+#     elif "gemma" in model_name:
+#         return model.model.layers[layer]
+#     else:
+#         raise ValueError(f"Please add submodule for model {model_name}")
+
+
+def get_submodule(model: LanguageModel, component: str, layer: int = None):
+    """
+    Gets the correct submodule depending on the component type and layer number.
+
+    component: one of ['embed', 'resid', 'attn', 'mlp']
+    layer: layer index (ignored for 'embed')
+    """
+
     model_name = model._model_key
 
+    print(f"Getting submodule for model {model_name}, component {component}, layer {layer}")
+
     if "pythia" in model_name:
-        return model.gpt_neox.layers[layer]
-    elif "gemma" in model_name:
-        return model.model.layers[layer]
+        if component == "embed":
+            return model.gpt_neox.embed_in
+        elif component == "resid":
+            return model.gpt_neox.layers[layer]
+        elif component == "attn":
+            return model.gpt_neox.layers[layer].attention
+        elif component == "mlp":
+            return model.gpt_neox.layers[layer].mlp
+        else:
+            raise ValueError(f"Unknown component type: {component}")
+    
     else:
         raise ValueError(f"Please add submodule for model {model_name}")

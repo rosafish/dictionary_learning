@@ -97,6 +97,7 @@ class BatchTopKTrainer(SAETrainer):
         dict_size: int,
         k: int,
         layer: int,
+        component: str,
         lm_name: str,
         dict_class: type = BatchTopKSAE,
         lr: Optional[float] = None,
@@ -113,6 +114,7 @@ class BatchTopKTrainer(SAETrainer):
         super().__init__(seed)
         assert layer is not None and lm_name is not None
         self.layer = layer
+        self.component = component
         self.lm_name = lm_name
         self.submodule_name = submodule_name
         self.wandb_name = wandb_name
@@ -293,6 +295,7 @@ class BatchTopKTrainer(SAETrainer):
             "lm_name": self.lm_name,
             "wandb_name": self.wandb_name,
             "submodule_name": self.submodule_name,
+            "component": self.component,
         }
 
     @staticmethod
