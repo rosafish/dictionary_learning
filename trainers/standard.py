@@ -18,6 +18,7 @@ class StandardTrainer(SAETrainer):
                  activation_dim: int,
                  dict_size: int,
                  layer: int,
+                 component: str,
                  lm_name: str,
                  dict_class=AutoEncoder,
                  lr:float=1e-3,
@@ -35,6 +36,7 @@ class StandardTrainer(SAETrainer):
 
         assert layer is not None and lm_name is not None
         self.layer = layer
+        self.component = component
         self.lm_name = lm_name
         self.submodule_name = submodule_name
 
@@ -168,6 +170,7 @@ class StandardTrainer(SAETrainer):
             'seed' : self.seed,
             'device' : self.device,
             'layer' : self.layer,
+            'component': self.component,
             'lm_name' : self.lm_name,
             'wandb_name': self.wandb_name,
             'submodule_name': self.submodule_name,
