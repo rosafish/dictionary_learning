@@ -93,6 +93,11 @@ class StandardTrainer(SAETrainer):
 
             # resample first n_resample dead neurons
             deads[deads.nonzero()[n_resample:]] = False
+
+
+            sampled_vecs = sampled_vecs.to(self.ae.encoder.weight.dtype)
+
+
             self.ae.encoder.weight[deads] = sampled_vecs * alive_norm * 0.2
             self.ae.decoder.weight[:,deads] = (sampled_vecs / sampled_vecs.norm(dim=-1, keepdim=True)).T
             self.ae.encoder.bias[deads] = 0.
