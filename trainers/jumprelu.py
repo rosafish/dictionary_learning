@@ -78,6 +78,7 @@ class JumpReluTrainer(nn.Module, SAETrainer):
         activation_dim: int,
         dict_size: int,
         layer: int,
+        component: str,
         lm_name: str,
         dict_class=JumpReluAutoEncoder,
         seed: Optional[int] = None,
@@ -100,6 +101,7 @@ class JumpReluTrainer(nn.Module, SAETrainer):
         assert lm_name is not None, "Language model name must be specified"
         self.lm_name = lm_name
         self.layer = layer
+        self.component = component
         self.submodule_name = submodule_name
         self.device = device
         self.steps = steps
@@ -221,6 +223,7 @@ class JumpReluTrainer(nn.Module, SAETrainer):
             "dict_size": self.ae.dict_size,
             "device": self.device,
             "layer": self.layer,
+            "component": self.component,
             "lm_name": self.lm_name,
             "wandb_name": self.wandb_name,
             "submodule_name": self.submodule_name,
