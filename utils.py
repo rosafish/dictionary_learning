@@ -15,6 +15,18 @@ from .dictionary import (
     JumpReluAutoEncoder,
 )
 
+import pickle
+
+def shoe_dataset_to_generator(pkl_path):
+    with open(pkl_path, "rb") as f:
+        data = pickle.load(f)
+
+    def gen():
+        for appearance, shoe_color in data:
+            yield f"The new customer is {appearance}. This customer bought a pair of shoes, {shoe_color}."
+
+    return gen()
+
 
 def hf_dataset_to_generator(dataset_name, split="train", streaming=True):
     dataset = load_dataset(dataset_name, split=split, streaming=streaming)
